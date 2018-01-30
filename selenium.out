@@ -1,0 +1,11 @@
+2018-01-29 22:57:35 INFO  TestBase:160 - loading config.properties
+2018-01-29 22:57:35 INFO  TestBase:165 - loading or.properties
+2018-01-29 22:57:35 INFO  TestBase:171 - loading Amazon homepage.properties
+2018-01-29 22:57:35 INFO  TestBase:177 - loading guru99.properties
+2018-01-29 22:57:35 INFO  TestBase:183 - loading automation Loginpage .properties
+2018-01-29 22:57:35 INFO  TestBase:189 - loading Magneto webSite properties
+2018-01-29 22:57:35 INFO  TestBase:195 - loading Myntra webSite properties
+2018-01-29 22:57:35 INFO  TestBase:201 - loading GoIbibo webSite properties
+2018-01-29 22:57:40 INFO  WaitHelper:31 - 20
+2018-01-29 22:57:40 INFO  WaitHelper:36 - 240
+2018-01-29 22:57:40 INFO  VerifyVideoStreaming:21 - com.umbrella.Amazon.GuiTests.VerifyVideoStreaming Method verifyYouTube  Get Started

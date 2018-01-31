@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.apache.tika.exception.TikaException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -498,9 +499,95 @@ public class GenericWebSites extends TestBase {
 
 	}
 
-	public void getFirstVideo() {
-		
+	public void getFirstVideo() throws InterruptedException {
 
+		List<WebElement> youtubeVideos = driver
+				.findElements(By.xpath("//div[@id='primary']//div[@id='contents']//a[@id='thumbnail']"));
+		log.info(" Number of YouTub Videso on the Page " + youtubeVideos.size());
+		Thread.sleep(3000);
+		youtubeVideos.get(0).click();
+		Thread.sleep(10000);
+	}
+
+	// The getElementById() method returns the element that has the ID attribute
+	// with the specified value.
+	//
+	// This method is one of the most common methods in the HTML DOM, and is
+	// used almost every time you want to manipulate, or get info from, an
+	// element on your document.
+	//
+	// Returns null if no elements with the specified ID exists.
+	//
+	// An ID should be unique within a page. However, if more than one element
+	// with the specified ID exists, the getElementById() method returns the
+	// first element in the source code.
+	public void variousvideoOperation() throws InterruptedException {
+
+		WebElement videoplayer = driver.findElement(By.xpath("//video"));
+		try {
+			Thread.sleep(5000);
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
+			jse.executeScript("document.getElementById(\"movie_player\").click()");
+			Thread.sleep(6000);
+			// check video is paused
+			log.info("I m Priniting State of the Video");
+			System.out.println(jse.executeScript("document.getElementById(\"movie_player\").paused"));
+
+			log.info("Playing Video");
+			log.info("To check Video Raedy State ");
+			Object elem = jse.executeScript("document.getElementsByClassName(video-stream)).readyState");
+
+			System.out.println(jse.executeScript("document.getElementsByClassName(video-stream)).readyState"));
+
+			jse.executeScript("document.getElementById(\"movie_player\").click()");
+			Thread.sleep(2000);
+			// check video is paused
+			log.info("I m Priniting State of the Video");
+			System.out.println(jse.executeScript("document.getElementById(\"movie_player\").paused"));
+			log.info("Increasing volume ");
+			jse.executeScript("document.getElementById(\"movie_player\").volume=0.5");
+			Thread.sleep(2000);
+			log.info("To check video is muted ");
+			System.out.println(jse.executeScript("document.getElementById(\"movie_player\").muted"));
+			Thread.sleep(5000);
+
+			;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void getReadYStateofVideo() {
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		log.info("To check Video Raedy State ");
+		try {
+			Thread.sleep(5000);
+			Object elem = jse.executeScript("document.getElementById(\"movie_player\").readyState");
+			log.info("To  Video Raedy State Objehct is  " + elem.toString());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void skipAdd() throws InterruptedException {
+		//https://www.youtube.com/watch?v=2SzdhH8xAX4
+		Thread.sleep(5000);
+		WebElement skipadd = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
+		String SkipaddInSeconds = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[1]"))
+				.getText();
+	//	WebElement SkipaddInSeconds1 = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
+        log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
+        Thread.sleep(5000);
+        log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
+
+        await("Download did not complete within 20 seconds").atMost(20, TimeUnit.SECONDS).until(skipadd::getText,
+				is("Complete!"));
+        
+        WebElement SkipAddAfter5Seconds = driver.findElement(By.xpath("//div[@class='videoAdUiSkipContainer html5-stop-propagation']//button"));
+        SkipAddAfter5Seconds.click();
 	}
 
 }

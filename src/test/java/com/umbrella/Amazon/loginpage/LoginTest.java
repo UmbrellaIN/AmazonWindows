@@ -10,7 +10,6 @@ import com.umbrella.Amazon.generics.LoggerHelper;
 import com.umbrella.Amazon.pageLibrary.LoginPage;
 import com.umbrella.Amazon.testCore.Config;
 import com.umbrella.Amazon.testCore.TestBase;
-
 /**
  * 
  * @author Bhanu Pratap https://www.youtube.com/user/MrBhanupratap29/playlists
@@ -29,6 +28,7 @@ public class LoginTest extends TestBase {
 	    return data;
 	}
 
+	
 	@Test(dataProvider="userData")
 	public void testLoginToApplication(String UserName, String PassWord) throws Exception {
 		// System.out.println(" *******************I am executing Login Test and

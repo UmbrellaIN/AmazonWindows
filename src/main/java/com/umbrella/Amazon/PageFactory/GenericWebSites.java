@@ -1,19 +1,26 @@
 package com.umbrella.Amazon.PageFactory;
 
 import java.awt.image.BufferedImage;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.apache.tika.exception.TikaException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -528,6 +535,7 @@ public class GenericWebSites extends TestBase {
 			Thread.sleep(5000);
 			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript("document.getElementById(\"movie_player\").click()");
+
 			Thread.sleep(6000);
 			// check video is paused
 			log.info("I m Priniting State of the Video");
@@ -573,21 +581,153 @@ public class GenericWebSites extends TestBase {
 	}
 
 	public void skipAdd() throws InterruptedException {
-		//https://www.youtube.com/watch?v=2SzdhH8xAX4
+		// https://www.youtube.com/watch?v=2SzdhH8xAX4
 		Thread.sleep(5000);
 		WebElement skipadd = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
 		String SkipaddInSeconds = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[1]"))
 				.getText();
-	//	WebElement SkipaddInSeconds1 = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
-        log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
-        Thread.sleep(5000);
-        log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
+		// WebElement SkipaddInSeconds1 =
+		// driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
+		log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
+		Thread.sleep(5000);
+		log.info("Getting Messgae form The Addskipper " + SkipaddInSeconds);
 
-        await("Download did not complete within 20 seconds").atMost(20, TimeUnit.SECONDS).until(skipadd::getText,
+		await("Download did not complete within 20 seconds").atMost(20, TimeUnit.SECONDS).until(skipadd::getText,
 				is("Complete!"));
-        
-        WebElement SkipAddAfter5Seconds = driver.findElement(By.xpath("//div[@class='videoAdUiSkipContainer html5-stop-propagation']//button"));
-        SkipAddAfter5Seconds.click();
+
+		WebElement SkipAddAfter5Seconds = driver
+				.findElement(By.xpath("//div[@class='videoAdUiSkipContainer html5-stop-propagation']//button"));
+		SkipAddAfter5Seconds.click();
+	}
+
+	public void skipADD2() throws InterruptedException {
+		// If video does not have Skip Add button present it witll raise a
+		// exception which is caught in first catch block and
+		// Step 1: Wait for the aPage to load
+		// Step 2: Check the Visibilty of the skip add button if it is false
+		// then it will go in the catch block and gracefullt terminate the
+		// program
+		// Step:3 If it True then perorm the various Various operation
+		// Step 4 : Click on the skip ADD Button
+
+		Thread.sleep(2000);
+		WebElement videoAdUiPreSkipButton = null;
+		WebElement skipaddbutton = null;
+		log.info(
+				"*****************************************Printing Information In The begining ++++++++++++++++++++++++++++");
+		try {
+
+			videoAdUiPreSkipButton = driver.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']"));
+			log.info("*************VISIBILITY OF THE ELEMENT IS ************************* "
+					+ videoAdUiPreSkipButton.isDisplayed());
+
+			if (videoAdUiPreSkipButton.isDisplayed() == true) {
+				log.info("*************Getting Text from the Pre text Box in the begining************************* "
+						+ videoAdUiPreSkipButton.getText());
+
+				WebElement videoAdUiPreSkipButtonFirstDiv = driver
+						.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[1]"));
+				log.info("*************Getting Text from the FIRST DIV in the begining*************************** "
+						+ videoAdUiPreSkipButtonFirstDiv.getText());
+
+				WebElement videoAdUiPreSkipButtonSECONDDiv = driver
+						.findElement(By.xpath("//div[@class='videoAdUiPreSkipButton']//div[2]"));
+				log.info("*************Getting Text from the SECOND DIV in the begining****************************** "
+						+ videoAdUiPreSkipButtonSECONDDiv.getText());
+
+				Thread.sleep(5000);
+
+				log.info(
+						"*************VISIBILITY OF THE ELEMENT 'YOU CAN SKIP ADD ' IS AFTER WAITING MORE THAN 5 SECONDS "
+								+ "************************* " + videoAdUiPreSkipButton.isDisplayed());
+
+				skipaddbutton = driver
+						.findElement(By.xpath("//div[@class='videoAdUiSkipContainer html5-stop-propagation']"));
+				log.info("*************VISIBILITY OF THE ELEMENT FOR SKIP ADD BUTTON" + "************************* "
+						+ skipaddbutton.isDisplayed());
+				log.info("*************VISIBILITY OF THE ELEMENT FOR SKP ADD BUTTON " + "************************* "
+						+ skipaddbutton.getText());
+
+				skipaddbutton.click();
+
+				Thread.sleep(10000);
+
+			} else {
+				log.info(
+
+						"+++++++++++++video Doesn not have Skip Add button and It is Stopped in Second Catch Block +++++++++++++++++++++++++++");
+
+			}
+		} catch (Exception e) {
+			log.info(
+					"+++++++++++++video Doesn not have Skip Add button and it is not monextized and I am terminating Program in First excepion Block +++++++++++++++++++++++++++");
+			driver.navigate().refresh();
+			skipADD2();
+
+			// e.printStackTrace();
+		}
+
+	}
+
+	public void getCookieInformation() {
+		driver.findElement(By.name("username")).sendKeys("ankit");
+		driver.findElement(By.name("password")).sendKeys("ankit");
+		driver.findElement(By.name("submit")).click();
+		File file = new File("cookie.data");
+		try {
+			file.delete();
+			log.info("++++++++++++++++++++++ Create Info Started ++++++++++++++++");
+			file.createNewFile();
+			FileWriter filewrite = new FileWriter(file);
+			BufferedWriter bufferwriter = new BufferedWriter(filewrite);
+			Set<Cookie> cookies = driver.manage().getCookies();
+			for (Cookie ck : cookies) {
+				bufferwriter.write((ck.getName() + ";" + ck.getValue() + ";" + ck.getDomain() + ";" + ck.getPath() + ";"
+						+ ck.getExpiry() + ";" + ck.isSecure()));
+				bufferwriter.newLine();
+			}
+			bufferwriter.close();
+			filewrite.close();
+			log.info("++++++++++++++++++++++ Create Info Closed ++++++++++++++++");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public void authenticationUsingCookie() {
+		try {
+			File file = new File("cookie.data");
+			FileReader fileReader = new FileReader(file);
+			BufferedReader Buffreader = new BufferedReader(fileReader);
+			// StringTokenizer class in Java is used to break a string into
+			// tokens.
+			String strline;
+			while ((strline = Buffreader.readLine()) != null) {
+				StringTokenizer token = new StringTokenizer(strline, ";");
+				while (token.hasMoreTokens()) {
+					String name = token.nextToken();
+					String value = token.nextToken();
+					String domain = token.nextToken();
+					String path = token.nextToken();
+					Date expiry = null;
+					String val;
+					if (!(val = token.nextToken()).equals("null")) {
+						expiry = new Date(val);
+					}
+					Boolean isSecure = new Boolean(token.nextToken()).booleanValue();
+					Cookie ck = new Cookie(name, value, domain, path, expiry, isSecure);
+					System.out.println(ck);
+					driver.manage().addCookie(ck); // This will add the stored
+													// cookie to your current
+													// session
+				}
+			}
+			Thread.sleep(10000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

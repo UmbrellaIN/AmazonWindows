@@ -28,12 +28,64 @@ public class VerifyVideoStreaming extends TestBase {
 		config = new Config(OR);
 		driver.get(config.getWebsite());
 		generic = new GenericWebSites(driver);
-		//generic.youTubeSearchButton();
-		//generic.getFirstVideo();
-		//generic.variousvideoOperation();
-		//generic.getReadYStateofVideo();
+		// generic.youTubeSearchButton();
+		// generic.getFirstVideo();
+		   generic.variousvideoOperation();
+		// generic.getReadYStateofVideo();
 		generic.skipAdd();
 
+	}
+	
+	@Test
+	public void verifySkipAdd() throws InterruptedException
+	{
+		log.info(VerifyVideoStreaming.class.getName() + " Method verifySkipAdd " + " Get Started");
+		config = new Config(OR);
+		driver.get(config.getWebsite());
+		generic = new GenericWebSites(driver);
+		generic.skipADD2();
+	}
+	
+	@Test
+	public void verifyPause()
+	{
+		
+	}
+	
+	@Test
+	public void verifyPlay()
+	{
+		
+	}
+	
+	@Test
+	public void verifyPreviousButton()
+	{
+		
+	}
+	
+	@Test
+	public void verifyNextButton()
+	{
+		
+	}
+	
+	@Test
+	public void verifyVolume()
+	{
+		
+	}
+	
+	@Test
+	public void verifySettings()
+	{
+		
+	}
+	
+	@Test
+	public void verifyFullScreen()
+	{
+		
 	}
 
 }

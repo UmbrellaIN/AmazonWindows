@@ -75,7 +75,6 @@ public class HomePage extends TestBase {
 	public ProductCategoryPage clickOnMenu(WebElement element){
 		log.info("clickin on : "+element.getText());
 	//	System.out.println("****************************** I am Starting VerifyProductCounts Test and current Thread***********************************"+Thread.currentThread().getId());
-
 		element.click();
 		return new ProductCategoryPage(driver);
 	}

@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,6 +44,7 @@ import com.umbrella.Amazon.generics.WaitHelper;
 import com.umbrella.Amazon.testCore.TestBase;
 import com.umbrella.Amazon.utilities.ApacheTikaTextExtraction;
 
+import Flash.FlashObjectWebDriver;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 
@@ -54,6 +56,7 @@ public class GenericWebSites extends TestBase {
 	WebDriver driver;
 	String dirpathdownloads = "C:\\Users\\Acer\\Downloads";
 	String extension = "pdf";
+	FlashObjectWebDriver flashApp;
 	private final Logger log = LoggerHelper.getLogger(GenericWebSites.class);
 	WaitHelper waitHelper;
 
@@ -75,6 +78,15 @@ public class GenericWebSites extends TestBase {
 		waitHelper = new WaitHelper(driver);
 		// waitHelper.waitForElement(driver, carasoul, new
 		// Config(TestBase.OR).getExplicitWait());
+	}
+
+	public void testFlashApps() throws InterruptedException {
+		flashApp = new FlashObjectWebDriver(driver, "myFlashMovie");
+		flashApp.callFlashObject("Play");
+		Thread.sleep(3000);
+		flashApp.callFlashObject("StopPlay");
+		flashApp.callFlashObject("SetVariable", "/:message", "Flash testing using selenium Webdriver");
+		System.out.println(flashApp.callFlashObject("GetVariable", "/:message"));
 	}
 
 	public void changecontentbutton() {
@@ -730,4 +742,61 @@ public class GenericWebSites extends TestBase {
 		}
 	}
 
+	public void getcolorforWebelement() {
+		try {
+			Thread.sleep(3000);
+			WebElement elemenet = driver.findElement(By.xpath("//a[contains(text(),'Create a Page')]"));
+			String color = elemenet.getCssValue("color");
+			log.info("Color value is " + color);//rgba(54, 88, 153, 1)
+			String[] hexValue = color.replace("rgba(", "").replace(")", "").split(",");
+			hexValue[0] = hexValue[0].trim();
+			int hexValue1 = Integer.parseInt(hexValue[0]);                   
+			hexValue[1] = hexValue[1].trim();
+			int hexValue2 = Integer.parseInt(hexValue[1]);                   
+			hexValue[2] = hexValue[2].trim();
+			int hexValue3 = Integer.parseInt(hexValue[2]);                   
+			String actualColor = String.format("#%02x%02x%02x",hexValue1, hexValue2, hexValue3);
+			log.info(" Actual color is " + actualColor );//#365899
+		} catch (Exception e) {
+         e.printStackTrace();
+		}
+	}
+	
+	public void getcolorforBackGroundWebelement() {
+		try {
+			Thread.sleep(3000);
+			WebElement elemenet = driver.findElement(By.xpath("//button[@name='websubmit']"));
+			log.info("+++++++++++++Vidibilty of the element is +++++++++++++ " + elemenet.isDisplayed());
+			String color = elemenet.getCssValue("background-color");
+			log.info("Color value is " + color);// rgba(105, 167, 78, 1)
+			String[] hexValue = color.replace("rgba(", "").replace(")", "").split(",");
+			hexValue[0] = hexValue[0].trim();
+			int hexValue1 = Integer.parseInt(hexValue[0]);                   
+			hexValue[1] = hexValue[1].trim();
+			int hexValue2 = Integer.parseInt(hexValue[1]);                   
+			hexValue[2] = hexValue[2].trim();
+			int hexValue3 = Integer.parseInt(hexValue[2]);                   
+			String actualColor = String.format("#%02x%02x%02x",hexValue1, hexValue2, hexValue3);
+			log.info(" Actual color is " + actualColor );//Actual color is #69a74e
+		} catch (Exception e) {
+         e.printStackTrace();
+		}
+	}
+	
+	public void simplemethodtogetBackgroundColor()
+	{
+		try {
+			Thread.sleep(3000);
+			WebElement elemenet = driver.findElement(By.xpath("//button[@name='websubmit']"));
+			log.info("+++++++++++++Vidibilty of the element is +++++++++++++ " + elemenet.isDisplayed());
+			String color = elemenet.getCssValue("background-color");
+			log.info("Color value is " + color);//rgba(54, 88, 153, 1)
+			String hex = Color.fromString(color).asHex();
+			System.out.println(hex);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 }
